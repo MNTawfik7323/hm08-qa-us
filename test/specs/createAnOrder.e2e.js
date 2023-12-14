@@ -39,6 +39,7 @@ describe('Create an order', () => {
         const messageToDriver = await $(page.messageToDriver)
         await messageToDriver.waitForDisplayed()
         await messageToDriver.setValue('We are waiting outside')
+        await browser.pause(2000)
         //confirming message to the driver
         await expect(await $(page.messageToDriverConfirm)).toHaveValue('We are waiting outside')
     })
@@ -52,6 +53,7 @@ describe('Create an order', () => {
         const blanketAndHandkerchiefsButton = await $(page.blanketAndHandkerchiefsButton)
         await blanketAndHandkerchiefsButton.waitForDisplayed()
         await blanketAndHandkerchiefsButton.click()
+        await browser.pause(2000)
         await expect($(page.blanketButtonStatus)).toBeChecked();
     })
     // ordering 2 ice creams
@@ -62,6 +64,7 @@ describe('Create an order', () => {
         await iceCreamButton.waitForDisplayed()
         await iceCreamButton.click()
         await iceCreamButton.click()
+        await browser.pause(4000)
     // confirming 2 ice creams were ordered
         await expect(await $(page.iceCreamCheck)).toBeExisting(2)
     })
@@ -71,6 +74,7 @@ describe('Create an order', () => {
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
         const orderButton = await $(page.orderButton)
         await orderButton.waitForDisplayed()
+        browser.pause(2000)
         await orderButton.click()
     // confirming that the search modal has appeared
         await expect(await $(page.carSearchModal)).toBeExisting()

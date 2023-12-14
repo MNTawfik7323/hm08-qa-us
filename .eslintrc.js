@@ -20,6 +20,7 @@ module.exports = {
     ],
     "rules": {
         "mocha/no-skipped-tests": "error",
-        "mocha/no-exclusive-tests": "error"
+        "mocha/no-exclusive-tests": "error",
+        "wdio/no-pause":0,
     },
 }
