@@ -22,5 +22,6 @@ module.exports = {
         "mocha/no-skipped-tests": "error",
         "mocha/no-exclusive-tests": "error",
         "wdio/no-pause":0,
+        "no-loss-of-precision": "off",
     },
 }
