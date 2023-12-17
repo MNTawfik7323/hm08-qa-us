@@ -24,8 +24,10 @@ module.exports = {
     // Click away
     cardFieldClick: '.plc', 
     // expected results 
+    fromFieldCheck: 'input#from.input',
+    toFieldCheck: 'input#to.input',
     cardImageCheck: 'img[alt="card"]',
-    iceCreamCheck: '.counter-value',
+    iceCreamCheck: 'div.counter-value',
     blanketButtonStatus: '.switch-input',
     messageToDriverConfirm: '#comment',
     // Modals

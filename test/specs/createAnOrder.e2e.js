@@ -6,7 +6,9 @@ describe('Create an order', () => {
         //call the Taxi to the address
         await browser.url(`/`)
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
-        await browser.pause(2000)
+        // confirming the To and From fields have been filled out
+        await expect(await $(page.fromFieldCheck)).toHaveValue('East 2nd Street, 601')
+        await expect(await $(page.toFieldCheck)).toHaveValue('1300 1st St')
         })
     it('should select supportive plan', async () => {
         //selecting the supportive class
@@ -14,6 +16,9 @@ describe('Create an order', () => {
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
         const supportiveButton = await $(page.supportiveButton)
         await supportiveButton.click()
+        // confirming the supportive class has been selected
+        const parentElement = await supportiveButton.parentElement()
+        await expect(parentElement).toHaveElementClassContaining('active')
         })
     it('should fill in the phone number', async () => {
         //Input phone number
@@ -21,6 +26,7 @@ describe('Create an order', () => {
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
         const phoneNumber = helper.getPhoneNumber("+1");
         await page.submitPhoneNumber(phoneNumber);
+        // confirming the phone number has been correctly added
         await expect(await helper.getElementByText(phoneNumber)).toBeExisting();
         })
     it('should add a credit card', async () => {
@@ -30,6 +36,7 @@ describe('Create an order', () => {
         //checking that the card was added successfully
         const cardImageCheck = await $(page.cardImageCheck)
         await cardImageCheck.waitForDisplayed()
+        // confirming the credit card option has been correctly added
         await expect(await $(cardImageCheck)).toBeExisting()
         })
     // sending a message to the driver "we are waiting outside"
@@ -39,7 +46,6 @@ describe('Create an order', () => {
         const messageToDriver = await $(page.messageToDriver)
         await messageToDriver.waitForDisplayed()
         await messageToDriver.setValue('We are waiting outside')
-        await browser.pause(2000)
         //confirming message to the driver
         await expect(await $(page.messageToDriverConfirm)).toHaveValue('We are waiting outside')
     })
@@ -53,7 +59,7 @@ describe('Create an order', () => {
         const blanketAndHandkerchiefsButton = await $(page.blanketAndHandkerchiefsButton)
         await blanketAndHandkerchiefsButton.waitForDisplayed()
         await blanketAndHandkerchiefsButton.click()
-        await browser.pause(2000)
+        // confirming the blanket and handkerchiefs have been selected
         await expect($(page.blanketButtonStatus)).toBeChecked();
     })
     // ordering 2 ice creams
@@ -64,9 +70,10 @@ describe('Create an order', () => {
         await iceCreamButton.waitForDisplayed()
         await iceCreamButton.click()
         await iceCreamButton.click()
-        await browser.pause(4000)
     // confirming 2 ice creams were ordered
-        await expect(await $(page.iceCreamCheck)).toBeExisting(2)
+        const iceCreamCheck = await $(page.iceCreamCheck)
+        await iceCreamCheck.waitForDisplayed()
+        await expect(await $(page.iceCreamCheck)).toHaveText('2')
     })
     // selecting the order button when the order has been completed
     it('the car search modal should appear', async () => {
@@ -74,16 +81,26 @@ describe('Create an order', () => {
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
         const orderButton = await $(page.orderButton)
         await orderButton.waitForDisplayed()
-        browser.pause(2000)
         await orderButton.click()
     // confirming that the search modal has appeared
         await expect(await $(page.carSearchModal)).toBeExisting()
     })
     // waiting for the driver and their information to appear
+    // added the minimum amount of steps needed to get to driver info modal
         it('should wait for the driver information to appear', async () => {
         await browser.url(`/`)
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
+        const supportiveButton = await $(page.supportiveButton)
+        await supportiveButton.click()
+        const messageToDriver = await $(page.messageToDriver)
+        await messageToDriver.waitForDisplayed()
+        await messageToDriver.setValue('We are waiting outside')
+        const orderButton = await $(page.orderButton)
+        await orderButton.waitForDisplayed()
+        await orderButton.click()
+        //necessary browser pause to wait for timer to count down
         await browser.pause(32000);
+        // check to confirm the driver info modal appears
         await expect($(`${page.driverInfoModal}`)).toBeExisting();
     })
 })

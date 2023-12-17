@@ -23,5 +23,6 @@ module.exports = {
         "mocha/no-exclusive-tests": "error",
         "wdio/no-pause":0,
         "no-loss-of-precision": "off",
+        //"@typescript-eslint/no-loss-of-precision": "error"
     },
 }
